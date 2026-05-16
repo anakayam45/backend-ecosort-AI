@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi API</title>
+</head>
+
+<body>
+    <div>
+        <h3>Testing API</h3>
+        <div>
+            <p>URL</p>
+            <div>
+                <input type="text" id="inpt-url">
+                <input type="button" onclick="Send('url')" value="kirim">
+            </div>
+        </div>
+        <br><i>or</i>
+        <div>
+            <p>Gambar</p>
+            <div>
+                <input type="file" id="inpt-image">
+                <input type="button" onclick="Send('image')" value="Upload">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        ip = "http://127.0.0.1:5000/"
+        file = ''
+        function Send(type) {
+            if (type == "url") {
+                Url(document.getElementById("inpt-url"))
+            } else if (type == "image") {
+                Image(document.getElementById("inpt-image"))
+            } else {
+                alert("Illegal Action!")
+            }
+            console.log(file)
+        }
+
+        function Url(url) {
+            value = url.value
+            if (value.trim() === "") {
+                alert("Data tidak boleh kosong")
+            }
+
+            const formData = new FormData()
+
+            formData.append('image_url', value)
+            formData.append('process_id', "1945")
+            Post(formData, "predict_url")
+        }
+
+        function Image(image) {
+            file = image.files[0]
+            if (!file) {
+                alert("Please select an image first")
+            }
+
+            const formData = new FormData()
+
+            formData.append('file', file)
+            formData.append('process_id', "1945")
+            Post(formData, "predict_image")
+        }
+
+        function Post(formData, path) {
+            fetch('http://127.0.0.1:5000/' + path, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error when upload")
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log("berhasil woi")
+            })
+            .catch(err => {
+                alert("Error: " + err.message)
+            })
+        }
+    </script>
+</body>
+
+</html>
