@@ -40,7 +40,7 @@ def predict_url():
         response.raise_for_status()
         image = Image.open(io.BytesIO(response.content))
         image_array = process_image(image)
-        return jsonify({'message': 'Image processed successfully', 'process_id': process_id}), 200
+        return jsonify({'classes': '1', 'process_id': process_id}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -60,7 +60,7 @@ def predict_image():
         image_bytes = file.read()
         image = Image.open(io.BytesIO(image_bytes))
         image_array = process_image(image)
-        return jsonify({'message': 'Image processed successfully', 'process_id': process_id}), 200
+        return jsonify({'classes': '1', 'process_id': process_id}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
