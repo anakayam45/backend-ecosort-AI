@@ -1,7 +1,11 @@
 import os, io,  numpy as np, requests
+import threading
 from flask import Flask, request, jsonify, render_template
 from PIL import Image
 from tensorflow.keras.models import load_model
+
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = '0'
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = '2'
 
 status = "stuck"
 
@@ -19,14 +23,19 @@ def process_image(image):
     image_array = np.expand_dims(image_array, axis=0)
     # Perform prediction using the loaded model
     # return classes
-    return None
+    return image_array
 
 
 app = Flask(__name__)
+model_locked = threading.Lock()
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+
+@app.route('/ambil_data', methods=['GET'])
+def hello():
+    return jsonify({'message': 'id_proses, waktu, tipesampah, akurasi'})
 
 @app.route('/predict_url', methods=['POST'])
 def predict_url():
@@ -36,10 +45,11 @@ def predict_url():
         return jsonify({'error': 'Missing process_id or image_url'}), 400
     
     try:
-        response = requests.get(image_url)
-        response.raise_for_status()
-        image = Image.open(io.BytesIO(response.content))
-        image_array = process_image(image)
+        with model_locked:
+            response = requests.get(image_url)
+            response.raise_for_status()
+            image = Image.open(io.BytesIO(response.content))
+            image_array = process_image(image)
         return jsonify({'classes': '1', 'process_id': process_id}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -57,9 +67,10 @@ def predict_image():
         return jsonify({'error': 'Missing process_id or file'}), 400
     
     try:
-        image_bytes = file.read()
-        image = Image.open(io.BytesIO(image_bytes))
-        image_array = process_image(image)
+        with model_locked:
+            image_bytes = file.read()
+            image = Image.open(io.BytesIO(image_bytes))
+            image_array = process_image(image)
         return jsonify({'classes': '1', 'process_id': process_id}), 200
 
     except Exception as e:
