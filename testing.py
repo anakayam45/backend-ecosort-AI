@@ -5,15 +5,15 @@ from PIL import Image
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = '0'
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = '2'
 
-kelas = {'hazard': 0,
-        'kaca': 1,
-        'kardus': 2,
-        'kertas': 3,
-        'logam': 4,
-        'organic': 5,
-        'plastik': 6,
-        'recyclabe': 7,
-        'residu': 8}
+kelas = { 0: 'hazard',
+         1: 'kaca',
+         2: 'kardus',
+         3: 'kertas',
+         4: 'logam',
+         5: 'organic',
+         6: 'plastik',
+         7: 'recyclabe',
+         8: 'residu'}
 
 model = load_model("models/model_ep_33_vacc_0.8826530575752258.keras")
 
@@ -25,8 +25,8 @@ def process_image(image):
     # return classes
     return image_array
 
-file = Image.open("img\kertas.jpg")
-# array_image = process_image(file)
-# history = model.predict(array_image)
-print(file)
+file = Image.open("img/residu.jpg")
 
+array_image = process_image(file)
+history = model.predict(array_image)
+print(kelas[history.argmax()-1])
