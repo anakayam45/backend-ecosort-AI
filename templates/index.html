@@ -54,7 +54,7 @@
             formData.append('process_id', "1945")
             const data = await Post(formData, "predict_url")
             if (data !== undefined) {
-                alert("Ini adalah gambar: " + data)
+                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence)
             }
         }
 
@@ -71,7 +71,7 @@
             formData.append('process_id', "1945")
             const data = await Post(formData, "predict_image")
             if (data !== undefined) {
-                alert("Ini adalah gambar: " + data)
+                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence)
             }
         }
 
@@ -88,7 +88,11 @@
             })
             .then(data => {
                 console.log("berhasil woi")
-                return data.classes;
+                return {
+                    "category": data.category,
+                    "session_id": data.session_id,
+                    "confidence": data.confidence
+                }
             })
             .catch(err => {
                 alert("Error: " + err.message)

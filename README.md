@@ -56,10 +56,14 @@ Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang te
 
 ## 🚀 Cara Menjalankan Project secara Lokal
 
-1. Pastikan dependensi sudah terinstal:
-   ```bash
-   pip install -r requirement.txt
+1. **Install Python versi 3.11.9**
 
-2. Untuk menjalankan server:
+   Download melalui url ini [Python 3.11.9](https://www.python.org/downloads/release/python-3119/), kemudian instaal dan pastikan mencentang opsi **"Add Python to PATH"**
+
+2. **Pastikan dependensi sudah terinstal:**
+   ```bash
+   pip install -r requirements.txt
+
+3. **Untuk menjalankan server:**
    ```bash
    python app.py

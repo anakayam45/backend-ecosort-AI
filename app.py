@@ -61,7 +61,11 @@ def predict_url():
             image = Image.open(io.BytesIO(response.content))
             image_array = process_image(image)
             history = model.predict(image_array)
-        return jsonify({'classes': kelas[history.argmax()-1], 'process_id': process_id}), 200
+        return jsonify({
+            'category': kelas[history.argmax()-1],
+            'session_id': process_id,
+            'confidence': float(np.max(history))
+            }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -83,7 +87,11 @@ def predict_image():
             image = Image.open(io.BytesIO(image_bytes))
             image_array = process_image(image)
             history = model.predict(image_array)
-        return jsonify({'classes': kelas[history.argmax()-1], 'process_id': process_id}), 200
+        return jsonify({
+            'category': kelas[history.argmax()-1],
+            'session_id': process_id,
+            'confidence': float(np.max(history))
+            }), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
