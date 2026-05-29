@@ -10,6 +10,7 @@
 <body>
     <div>
         <h3>Testing API</h3>
+        <i id="info" style="color: grey;">RUNNING...</i>
         <div>
             <p>URL</p>
             <div>
@@ -25,12 +26,15 @@
                 <input type="button" onclick="Send('image')" value="Upload">
             </div>
         </div>
+        <div id="jumpscare"><img src="" alt=""></div>
     </div>
 
     <script>
+        info = document.getElementById("info")
         ip = "http://127.0.0.1:5000/"
         file = ''
         function Send(type) {
+            info.textContent = "Processing..."
             if (type == "url") {
                 Url(document.getElementById("inpt-url"))
             } else if (type == "image") {
@@ -54,8 +58,12 @@
             formData.append('session_id', "1945")
             const data = await Post(formData, "predict_url")
             if (data !== undefined) {
+                info.textContent = "Done!"
                 alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence + "%")
             }
+            setTimeout(() => {
+                info.textContent = "RUNNING..."
+            }, 2000)
         }
 
         async function Image(image) {
@@ -71,12 +79,16 @@
             formData.append('session_id', "1945")
             const data = await Post(formData, "predict_image")
             if (data !== undefined) {
+                info.textContent = "Done!"
                 alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence + "%")
             }
+            setTimeout(() => {
+                info.textContent = "RUNNING..."
+            }, 2000)
         }
 
         function Post(formData, path) {
-            return fetch('http://127.0.0.1:5000/' + path, {
+            return fetch( path, {
                 method: 'POST',
                 body: formData
             })
@@ -88,6 +100,7 @@
             })
             .then(data => {
                 console.log("berhasil woi")
+                info.textContent = "Done!"
                 return {
                     "category": data.category,
                     "session_id": data.session_id,
@@ -96,6 +109,7 @@
             })
             .catch(err => {
                 alert("Error: " + err.message)
+                info.textContent = err.message
             })
         }
     </script>
