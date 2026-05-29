@@ -1,6 +1,7 @@
 import os, io,  numpy as np, requests
 import threading
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from PIL import Image
 from tensorflow.keras.models import load_model
 
@@ -28,6 +29,7 @@ except Exception as e:
 
 
 def process_image(image):
+    image = image.convert("RGB")
     image = image.resize((224, 224))
     image_array = np.array(image) / 255.0
     image_array = np.expand_dims(image_array, axis=0)
@@ -37,6 +39,7 @@ def process_image(image):
 
 
 app = Flask(__name__)
+CORS(app)
 model_locked = threading.Lock()
 
 @app.route('/', methods=['GET'])
@@ -90,7 +93,9 @@ def predict_image():
             }), 200
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+     print("===== ERROR PREDICT IMAGE =====")
+     print(str(e))
+     return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
