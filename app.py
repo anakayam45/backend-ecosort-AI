@@ -16,7 +16,7 @@ kelas = { 0: 'hazard',
          4: 'logam',
          5: 'organic',
          6: 'plastik',
-         7: 'recyclabe',
+         7: 'recyclable',
          8: 'residu'}
 
 try:
