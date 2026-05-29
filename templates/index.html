@@ -51,10 +51,10 @@
             const formData = new FormData()
 
             formData.append('image_url', value)
-            formData.append('process_id', "1945")
+            formData.append('session_id', "1945")
             const data = await Post(formData, "predict_url")
             if (data !== undefined) {
-                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence)
+                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence + "%")
             }
         }
 
@@ -68,10 +68,10 @@
             const formData = new FormData()
 
             formData.append('file', file)
-            formData.append('process_id', "1945")
+            formData.append('session_id', "1945")
             const data = await Post(formData, "predict_image")
             if (data !== undefined) {
-                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence)
+                alert("Ini adalah gambar: " + data.category + "\nConfidence: " + data.confidence + "%")
             }
         }
 

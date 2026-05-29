@@ -34,11 +34,11 @@ Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang te
 
 | Jenis Data | Parameter / Key | Tipe Data | Keterangan / Contoh Nilai |
 | :--- | :--- | :--- | :--- |
-| **Request Body** | `process_id` | *String* | ID unik untuk tracking proses (misal: `PROC-12345`) |
+| **Request Body** | `session_id` | *String* | ID unik untuk tracking proses (misal: `PROC-12345`) |
 | | `image_url` | *String* | Tautan langsung ke gambar (misal: `https://example.com/image.jpg`) |
-| **Response Body** | `process_id` | *String* | Mengembalikan ID proses yang sama |
-| | `classes` | *String* | Hasil klasifikasi objek/sampah/makanan dari model AI |
-
+| **Response Body** | `session_id` | *String* | Mengembalikan ID proses yang sama |
+| | `category` | *String* | Hasil klasifikasi objek/sampah/makanan dari model AI |
+| | `confidence` | *float* | Nilai tingkat akurasi klasifikasi
 ---
 
 ### 3. Prediksi via File Upload (`POST /predict_image`)
@@ -47,11 +47,11 @@ Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang te
 
 | Jenis Data | Parameter / Key | Tipe Data | Keterangan / Ketentuan Berkas |
 | :--- | :--- | :--- | :--- |
-| **Request Payload**| `process_id` | *String* | ID unik untuk tracking proses |
+| **Request Payload**| `session_id` | *String* | ID unik untuk tracking proses |
 | | `file` | *Binary / File* | Berkas gambar dengan format: `image/jpeg`, `image/jpg`, atau `image/png` |
-| **Response Body** | `process_id` | *String* | Mengembalikan ID proses yang sama |
-| | `classes` | *String* | Hasil klasifikasi objek/sampah/makanan dari model AI |
-
+| **Response Body** | `session_id` | *String* | Mengembalikan ID proses yang sama |
+| | `category` | *String* | Hasil klasifikasi objek/sampah/makanan dari model AI |
+| | `confidence` | *float* | Nilai tingkat akurasi klasifikasi
 ---
 
 ## 🚀 Cara Menjalankan Project secara Lokal

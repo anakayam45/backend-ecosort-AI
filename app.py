@@ -43,16 +43,12 @@ model_locked = threading.Lock()
 def index():
     return render_template('index.html')
 
-@app.route('/ambil_data', methods=['GET'])
-def hello():
-    return jsonify({'message': 'id_proses, waktu, tipesampah, akurasi'})
-
 @app.route('/predict_url', methods=['POST'])
 def predict_url():
-    process_id = request.form.get('process_id')
+    session_id = request.form.get('session_id')
     image_url = request.form.get('image_url')
-    if not process_id or not image_url:
-        return jsonify({'error': 'Missing process_id or image_url'}), 400
+    if not session_id or not image_url:
+        return jsonify({'error': 'Missing session_id or image_url'}), 400
     
     try:
         with model_locked:
@@ -63,23 +59,23 @@ def predict_url():
             history = model.predict(image_array)
         return jsonify({
             'category': kelas[history.argmax()-1],
-            'session_id': process_id,
-            'confidence': float(np.max(history))
+            'session_id': session_id,
+            'confidence': round(float(np.max(history))*100, 2)
             }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 @app.route('/predict_image', methods=['POST'])
 def predict_image():
-    process_id = request.form.get('process_id')
+    session_id = request.form.get('session_id')
 
     # if request.content_type not in ['image/jpeg', 'image/png', 'image/jpg']:
     #     return jsonify({'error': 'Invalid file type'}), 400 // error handling for file type, but currently not working, need to be fixed later
 
     file = request.files['file']
 
-    if not process_id or not file:
-        return jsonify({'error': 'Missing process_id or file'}), 400
+    if not session_id or not file:
+        return jsonify({'error': 'Missing session_id or file'}), 400
     
     try:
         with model_locked:
@@ -89,8 +85,8 @@ def predict_image():
             history = model.predict(image_array)
         return jsonify({
             'category': kelas[history.argmax()-1],
-            'session_id': process_id,
-            'confidence': float(np.max(history))
+            'session_id': session_id,
+            'confidence': round(float(np.max(history))*100, 2)
             }), 200
 
     except Exception as e:
