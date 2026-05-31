@@ -1,6 +1,6 @@
-# EcoSort AI - Backend API Documentation
+# Pilahin AI - Backend API Documentation
 
-Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang tersedia pada *backend* EcoSort AI berbasis FastAPI.
+Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang tersedia pada *backend* Pilahin AI berbasis FastAPI.
 
 ---
 
