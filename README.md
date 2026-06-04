@@ -4,6 +4,8 @@ Dokumentasi ini memuat informasi teknis mengenai struktur *endpoint* API yang te
 
 ---
 
+<!-- hidup jokowi -->
+
 ## 📑 Ringkasan Endpoint
 
 | No | Method | Endpoint | Deskripsi | Input / Parameter | Tipe Konten (Request) | Format Respons (Success) |
